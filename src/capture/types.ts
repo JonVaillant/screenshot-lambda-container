@@ -1,11 +1,11 @@
-import { DirectNavigationOptions } from "puppeteer";
+// import { DirectNavigationOptions } from "puppeteer";
 
 export interface CaptureOptions {
     url?: string,
     capture?: 'element' | 'page' | 'viewport',
     selector?: string,
     puppeteer?: {
-        navigation?: DirectNavigationOptions
+        // navigation?: DirectNavigationOptions
         viewport?: Viewport,
         screenshot: {
             omitBackground: boolean,

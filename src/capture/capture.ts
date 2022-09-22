@@ -1,4 +1,5 @@
-import chromeLambda from "@sparticuz/chrome-aws-lambda";
+// import chromeLambda from "@sparticuz/chrome-aws-lambda";
+import puppeteer from "puppeteer";
 import MrPuppetshot from "mrpuppetshot";
 import { CaptureOptions } from "./types";
 
@@ -18,26 +19,38 @@ const defaultViewport = {
 };
 
 export const capture = async (options: CaptureOptions) => {
-    const puppetshot = chromeLambda.executablePath.then(executablePath =>
-        new MrPuppetshot(
+    const puppetshot = new MrPuppetshot(
         {
-            executablePath,
-            args: [...chromeLambda.args],
+            // executablePath,
+            // args: [...chromeLambda.args],
             headless: true,
             defaultViewport,
             ignoreHTTPSErrors: false,
             timeout: TIMEOUT
         },
-        chromeLambda.puppeteer
-        )
-    );
+        puppeteer
+    )
+
+    // const puppetshot = chromeLambda.executablePath.then(executablePath =>
+    //     new MrPuppetshot(
+    //         {
+    //             executablePath,
+    //             args: [...chromeLambda.args],
+    //             headless: true,
+    //             defaultViewport,
+    //             ignoreHTTPSErrors: false,
+    //             timeout: TIMEOUT
+    //         },
+    //         chromeLambda.puppeteer
+    //     )
+    // );
     
     if (!options.url) throw Error('No URL specified');
     new URL(options.url); // validate URL as URL
     
     const browser = await puppetshot;
     
-    await browser.navigate(options.url, options.puppeteer?.navigation);
+    await browser.navigate(options.url/* , options.puppeteer?.navigation */);
     
     options.puppeteer?.viewport &&
         (await browser.resizeViewport(options.puppeteer.viewport));
@@ -65,6 +78,8 @@ export const capture = async (options: CaptureOptions) => {
     }
     
     const response = buffer
+
+    browser.close();
     
     return response;
 }

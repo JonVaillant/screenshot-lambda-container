@@ -1,6 +1,7 @@
 import type { AWS } from '@serverless/typescript';
 
 import hello from '@functions/hello';
+import screenSnapper from '@functions/screen-snapper';
 
 const serverlessConfiguration: AWS = {
   service: 'serverless',
@@ -19,20 +20,24 @@ const serverlessConfiguration: AWS = {
     },
   },
   // import the function via paths
-  functions: { hello },
+  functions: { hello, screenSnapper },
   package: { individually: true },
   custom: {
     esbuild: {
       bundle: true,
       minify: false,
       sourcemap: true,
-      exclude: ['aws-sdk'],
+      exclude: [
+        "puppeteer", "puppeteer-core", '@sparticuz/chrome-aws-lambda', "aws-sdk"
+      ],
       target: 'node16',
       define: { 'require.resolve': undefined },
       platform: 'node',
-      concurrency: 10,
+      concurrency: 10
     },
   },
 };
 
 module.exports = serverlessConfiguration;
+
+// where to put externalModules: [ "@sparticuz/chrome-aws-lambda" ] ?

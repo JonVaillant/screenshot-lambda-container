@@ -26,6 +26,8 @@
   "dependencies": {
     "@middy/core": "^3.3.4",
     "@middy/http-json-body-parser": "^3.3.4",
-    "@sparticuz/chrome-aws-lambda": "^17.1.3"
+    "@sparticuz/chrome-aws-lambda": "^17.1.3",
+    "puppeteer": "^18.0.4",
+    "puppeteer-core": "^18.0.4"
   }
 }
