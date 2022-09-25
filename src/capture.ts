@@ -31,13 +31,13 @@ export const capture = async (url: string, isAws: boolean = false): Promise<stri
     });
 
     console.log('taking screenshot')
-    const screenshotBuffer = await page.screenshot({});
+    const screenshotBuffer = await page.screenshot({ type: 'png' });
 
     console.log('taken screenshot', screenshotBuffer)
 
-    const screenshot = screenshotBuffer.toString('base64')
+    const base64DataUrl = `data:image/png;base64,${screenshotBuffer.toString('base64')}`
 
     await browser.close();
 
-    return screenshot;
+    return base64DataUrl;
 }
