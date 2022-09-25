@@ -17,6 +17,6 @@
         "noFallthroughCasesInSwitch": true,
         "allowUnreachableCode": false
     },
-    "include": ["index.ts", /* "node_modules/@types/node/index.d.ts", */ "node_modules/puppeteer-tsd/src/index.d.ts"],
+    "include": ["src/*"],
     "exclude": []
 }

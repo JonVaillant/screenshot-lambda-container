@@ -1,24 +1,25 @@
 import { Context, APIGatewayProxyResult, APIGatewayEvent } from 'aws-lambda';
-import * as puppeteer from 'puppeteer';
+import { capture } from './capture';
 
 export const handler = async (event: APIGatewayEvent, context: Context): Promise<APIGatewayProxyResult> => {
     console.log(`Event: ${JSON.stringify(event, null, 2)}`);
     console.log(`Context: ${JSON.stringify(context, null, 2)}`);
 
-    // the `event` is the `body`
-    const body = event as { [key: string]: any }
+    // Usually with requests the body is as you expect
+    // for other events (as in test console), you'll need to add `"body":`
+    if (!event.body) return {
+        statusCode: 500,
+        body: 'No body (event not from API? - add `body`)'
+    }
 
-    if (!body.url) return {
+    const body = JSON.parse(event.body)
+
+    if (!body || !body.url) return {
         statusCode: 500,
         body: 'No URL provided'
     }
 
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    await page.goto(body?.url);
-    const screenshot = await page.screenshot({});
-
-    await browser.close();
+    const screenshot = await capture(body.url, true);
 
     return {
         statusCode: 200,
